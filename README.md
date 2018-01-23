@@ -10,7 +10,8 @@ Prof. Srinivas Devadas
 
 <h2>MIT Course Number</h2>
 6.006
-<br />
+
+<h2>Course links</h2>
 You can view the course on this link
 https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/index.htm
 
