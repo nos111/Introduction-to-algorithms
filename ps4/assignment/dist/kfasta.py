@@ -80,9 +80,10 @@ def subsequenceHashes(seq, k):
     h = 0
     for x in range(0, k - 1):
         h += ord(c) * pow(alphapet, k - x - 1)
+    info = Container(firstSeqence, h)
+    yield info
     #loop over the sequence and hash
     for s in sequences:
-        yield h
         lastLetter = s[k - 1]
         #remove the first letter value
         h -= ord(firstLetter) * pow(alphapet, k - 1)
@@ -90,6 +91,33 @@ def subsequenceHashes(seq, k):
         #add the new letter value
         h += ord(lastLetter)
         firstLetter = s[0]
+        info = Container(s, h)
+        yield info
 
+class MultiDict(object):
+    def __init__(self):
+        self.dict = {}
+    
+    def put(key, value):
+        try:
+            self.dict[key] = self.dict[key].append(value)
+        except KeyError:
+            self.dict[key] = []
+            self.dict[key] = self.dict[key].append(value)
+    def get(key):
+        try:
+            return self.dict[key]
+        except KeyError:
+            self.dict[key] = []
+            return  self.dict[key]
+    def deleteKey(key):
+        try:
+            del self.dict[key]
+        except KeyError:
+            pass
+
+
+def getExactSubmatches(seq, k, target):
+    return
 #if __name__ == '__main__':
 #    unittest.main()
