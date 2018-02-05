@@ -91,19 +91,33 @@ def subsequenceHashes(seq, k):
 # every m nucleotides.  (This will be useful when you try to use two
 # whole data files.)
 def intervalSubsequenceHashes(seq, k, m):
-    raise Exception("Not implemented!")
+    assert m >= k
+    try:
+        pos = 0
+        while True:
+            subseq = ''
+            for i in range(0, k):
+                subseq += seq.next()
+            rh = RollingHash(subseq)
+            yield (rh.current_hash(), (pos, subseq))
+            for i in range(0, m-k):
+                seq.next()
+            pos += m
+    except StopIteration:
+        return
 
 # Searches for commonalities between sequences a and b by comparing
 # subsequences of length k.  The sequences a and b should be iterators
 # that return nucleotides.  The table is built by computing one hash
 # every m nucleotides (for m >= k).
 def getExactSubmatches(a, b, k, m):
-    multiA = Multidict(subsequenceHashes(a, k))
+    print "building multiDict..."
+    multiA = Multidict(intervalSubsequenceHashes(a, k, m))
+    print "Matching DNA..."
     for hashValue, (text, pos) in subsequenceHashes(b, k):
         l = multiA.get(hashValue)
         for item in l:
             if item[0] == text:
-                
                 yield (item[1], pos)
     return
 
