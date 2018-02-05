@@ -44,12 +44,6 @@ def subsequences(seq, k):
     except StopIteration:
         return
 
-class Container(object):
-    def __init__(self, sequence, hashValue, begin):
-        self.s = sequence
-        self.h = hashValue
-        self.begin = begin
-
 class RollingHash(object):
     def __init__(self, text):
         self.alphapet = 26
@@ -66,25 +60,29 @@ class RollingHash(object):
         #print "the removed letter value is ", ord(firstLetter)
         self.h = self.h * self.alphapet
         self.h += ord(lastLetter)
+        return self.h
         #print "the new hash value is ", self.h
     def current_hash(self):
         return self.h
 
 def subsequenceHashes(seq, k):
-    sequences = subsequences(seq, k)
-    text = sequences.next()
-    rh1 = RollingHash(text)
-    firstLetter = text[0]
-    index = 0
-    yield (rh1.current_hash(), (text,index))
-    for s in sequences:
-        lastLetter = s[k - 1]
-        #remove the first letter value
-        rh1.slide(firstLetter, lastLetter)
-        firstLetter = s[0]
-        index += 1
-        yield (rh1.current_hash(), (s,index))
-    return
+    try:
+        assert k > 0
+        sequences = subsequences(seq, k)
+        text = sequences.next()
+        rh1 = RollingHash(text)
+        firstLetter = text[0]
+        index = 0
+        yield (rh1.current_hash(), (text,index))
+        for s in sequences:
+            lastLetter = s[k - 1]
+            #remove the first letter value
+            rh1.slide(firstLetter, lastLetter)
+            firstLetter = s[0]
+            index += 1
+            yield (rh1.current_hash(), (s,index))
+    except StopIteration:
+        return
 
 
 # Similar to subsequenceHashes(), but returns one k-length subsequence
@@ -117,8 +115,8 @@ def getExactSubmatches(a, b, k, m):
     for hashValue, (text, pos) in subsequenceHashes(b, k):
         l = multiA.get(hashValue)
         for item in l:
-            if item[0] == text:
-                yield (item[1], pos)
+            if item[1] == text:
+                yield (item[0], pos)
     return
 
 if __name__ == '__main__':

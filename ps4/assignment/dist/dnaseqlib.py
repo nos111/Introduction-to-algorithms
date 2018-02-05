@@ -72,7 +72,6 @@ def buildComparisonImage(filename, w, h, alen, blen, matches, remapfn=lambda x:m
     print "...done binning matches."
     print "Normalizing and plotting results..."
     maxval = float(arr.max())
-    print max(map(max, arr))
     img = Image.new('RGB', (w,h))
     for y in range(0, h):
         for x in range(0, w):

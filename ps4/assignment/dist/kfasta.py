@@ -116,8 +116,5 @@ class MultiDict(object):
         except KeyError:
             pass
 
-
-def getExactSubmatches(seq, k, target):
-    return
 #if __name__ == '__main__':
 #    unittest.main()
