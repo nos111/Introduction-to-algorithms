@@ -45,7 +45,6 @@ class ResizeableImage(imagematrix.ImageMatrix):
     def updateNeighborEnergy(self, x, y):
         neighborsList = self.getNeighbors(x, y)
         currentPixEnerg = self.getEnergy(x,y)
-        #print "energy of pix ",x,y, currentPixEnerg
         dp[x,y] = currentPixEnerg + dp[x,y - 1]
         track[x,y] = 0
         for cor in neighborsList:
@@ -53,7 +52,6 @@ class ResizeableImage(imagematrix.ImageMatrix):
             if(energy + currentPixEnerg < dp[x,y]):
                 dp[x,y] = energy + currentPixEnerg
                 track[x,y] = x - cor[0]
-        #print "updated ", x , y, "with track ", track[x,y]
 
     def findLowestValue(self):
         lowest = dp[0, self.height - 1]
@@ -67,13 +65,9 @@ class ResizeableImage(imagematrix.ImageMatrix):
 
     def buildTrack(self, startCoord):
         bestTrack = []
-        #print "start coordinates ", startCoord
         bestTrack.append(startCoord)
-        #print "adding ", (bestTrack[0][0] , bestTrack[0][1] ), self.getEnergy(bestTrack[0][0], bestTrack[0][1])
         for i in range(0, self.height - 1):
             x = track[bestTrack[i][0], bestTrack[i][1]]
-            #print "adding ", (bestTrack[i][0] - x, bestTrack[i][1] - 1), self.getEnergy(bestTrack[i][0] - x, bestTrack[i][1] - 1)
-            #print "x is ", x
             bestTrack.append((bestTrack[i][0] - x, bestTrack[i][1] - 1))
         return bestTrack
 
