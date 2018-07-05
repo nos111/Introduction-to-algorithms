@@ -5,9 +5,12 @@ track = {}
 dp = {}
 class ResizeableImage(imagematrix.ImageMatrix):
     def best_seam(self):
+        global energyDict
         energyDict = {}
-        track = {}
+        global dp 
         dp = {}
+        global track
+        track = {}
         startCord = ()
         bestSeam = []
         self.fillFirstRow()
@@ -42,6 +45,7 @@ class ResizeableImage(imagematrix.ImageMatrix):
     def updateNeighborEnergy(self, x, y):
         neighborsList = self.getNeighbors(x, y)
         currentPixEnerg = self.getEnergy(x,y)
+        #print "energy of pix ",x,y, currentPixEnerg
         dp[x,y] = currentPixEnerg + dp[x,y - 1]
         track[x,y] = 0
         for cor in neighborsList:
@@ -58,16 +62,17 @@ class ResizeableImage(imagematrix.ImageMatrix):
             if(dp[x,self.height - 1] < lowest):
                 lowest = dp[x,self.height - 1]
                 coordinates = (x,self.height - 1)
-        print("lowest value ", lowest)
+        print "lowest value ", lowest
         return coordinates
 
     def buildTrack(self, startCoord):
         bestTrack = []
         #print "start coordinates ", startCoord
         bestTrack.append(startCoord)
+        #print "adding ", (bestTrack[0][0] , bestTrack[0][1] ), self.getEnergy(bestTrack[0][0], bestTrack[0][1])
         for i in range(0, self.height - 1):
             x = track[bestTrack[i][0], bestTrack[i][1]]
-            #print "adding ", (bestTrack[i][0] - x, bestTrack[i][1] - 1)
+            #print "adding ", (bestTrack[i][0] - x, bestTrack[i][1] - 1), self.getEnergy(bestTrack[i][0] - x, bestTrack[i][1] - 1)
             #print "x is ", x
             bestTrack.append((bestTrack[i][0] - x, bestTrack[i][1] - 1))
         return bestTrack
